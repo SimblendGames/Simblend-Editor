@@ -9,6 +9,7 @@ public class AudioEditor : EditorWindow
     private float endTrim = 0f;
     private float fadeStartDuration = 0f;
     private float fadeEndDuration = 0f;
+    private bool isAudioAdded = false;
 
     [MenuItem("Tools/Simblend/Audio Editor")]
     public static void ShowWindow()
@@ -26,14 +27,23 @@ public class AudioEditor : EditorWindow
         {
             startTrim = EditorGUILayout.Slider("Start Trim", startTrim, 0f, audioClip.length);
             endTrim = EditorGUILayout.Slider("End Trim", endTrim, 0f, audioClip.length);
-
             fadeStartDuration = EditorGUILayout.Slider("Fade Start Duration", fadeStartDuration, 0f, endTrim - startTrim);
             fadeEndDuration = EditorGUILayout.Slider("Fade End Duration", fadeEndDuration, 0f, endTrim - startTrim);
+
+            if (!isAudioAdded)
+            {
+                endTrim = audioClip.length;
+                isAudioAdded = true;
+            }
 
             if (GUILayout.Button("Trim, Fade, and Save"))
             {
                 TrimAndFadeAudioClip();
             }
+        }
+        else
+        {
+            isAudioAdded = false;
         }
     }
 
