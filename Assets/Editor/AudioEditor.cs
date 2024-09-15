@@ -59,11 +59,22 @@ public class AudioEditor : EditorWindow
                 waveformTexture = DrawWaveform(audioClip, waveformWidth, waveformHeight, new Color(1, 0.5f, 0), startTrim, endTrim, fadeStartDuration, fadeEndDuration);
             }
 
+
             // Display waveform texture
             if (waveformTexture != null)
             {
                 GUILayout.Label("Waveform Preview");
                 GUILayout.Box(waveformTexture);
+
+                if(isPlaying)
+                {
+                    //Display the playhead
+                    Rect waveformRect = GUILayoutUtility.GetLastRect();
+                    float playheadPosition = Mathf.Min(((previewAudioSource.time) / (previewAudioSource.clip.length/2f)) * waveformRect.width, waveformRect.width);
+                    Rect playheadRect = new Rect(playheadPosition, GUILayoutUtility.GetLastRect().y, 2, waveformHeight);
+                    EditorGUI.DrawRect(playheadRect, Color.red);
+                }
+
             }
 
             // Sliders to control startTrim and endTrim
@@ -110,6 +121,14 @@ public class AudioEditor : EditorWindow
         {
             isAudioAdded = false;
         }
+
+        //Added repaint to refresh the movement of the playhead smoothly
+
+        if(isPlaying)
+        {
+            Repaint();
+        }
+
     }
 
     private void PlayPreview()
