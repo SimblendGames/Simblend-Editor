@@ -14,13 +14,13 @@ public class AudioEditor : EditorWindow
     private float endTrim = 0f;
     private float fadeStartDuration = 0f;
     private float fadeEndDuration = 0f;
-    private bool loopPreview = true;
+    private bool loopPreview = false;
 
     private Texture2D waveformTexture; // New field to store the waveform texture
     private const int waveformWidth = 500; // Width of the waveform
     private const int waveformHeight = 100; // Height of the waveform
 
-    [MenuItem("Tools/Simblend/Audio Editor")]
+    [MenuItem("Tools/Simblend/Audio Editor")] 
     public static void ShowWindow()
     {
         GetWindow<AudioEditor>("Audio Editor");
@@ -59,26 +59,17 @@ public class AudioEditor : EditorWindow
                 waveformTexture = DrawWaveform(audioClip, waveformWidth, waveformHeight, new Color(1, 0.5f, 0), startTrim, endTrim, fadeStartDuration, fadeEndDuration);
             }
 
-
             // Display waveform texture
             if (waveformTexture != null)
             {
                 GUILayout.Label("Waveform Preview");
                 GUILayout.Box(waveformTexture);
 
-<<<<<<< Updated upstream
-                if(isPlaying)
-                {
-                    //Display the playhead
-                    Rect waveformRect = GUILayoutUtility.GetLastRect();
-                    float playheadPosition = Mathf.Min(((previewAudioSource.time) / (previewAudioSource.clip.length/2f)) * waveformRect.width, waveformRect.width);
-=======
                 if (isPlaying)
                 {
                     //Display the playhead
                     Rect waveformRect = GUILayoutUtility.GetLastRect();
                     float playheadPosition = Mathf.Min(((previewAudioSource.time) / (previewAudioSource.clip.length / 2f)) * waveformRect.width, waveformRect.width);
->>>>>>> Stashed changes
                     Rect playheadRect = new Rect(playheadPosition, GUILayoutUtility.GetLastRect().y, 2, waveformHeight);
                     EditorGUI.DrawRect(playheadRect, Color.red);
                 }
@@ -130,20 +121,10 @@ public class AudioEditor : EditorWindow
             isAudioAdded = false;
         }
 
-<<<<<<< Updated upstream
-        //Added repaint to refresh the movement of the playhead smoothly
-
-        if(isPlaying)
-        {
-            Repaint();
-        }
-
-=======
         if (isPlaying)
         {
             Repaint();
         }
->>>>>>> Stashed changes
     }
 
     private void PlayPreview()
