@@ -1,4 +1,4 @@
-SIMLEND EDITOR TOOLS
+SIMBLEND EDITOR TOOLS
 
 What are Simblend Editor Tools?
 Simblend Editor Tools will have multiple editor plugins which will make working with Unity a better experience.
