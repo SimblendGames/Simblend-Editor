@@ -11,6 +11,7 @@ namespace SimblendTools
         private bool isAudioAdded = false;
 
         private AudioClip audioClip;
+        private float volume = 1f;
         private float startTrim = 0f;
         private float endTrim = 0f;
         private float fadeStartDuration = 0f;
@@ -84,6 +85,9 @@ namespace SimblendTools
                 fadeEndDuration = EditorGUILayout.Slider("Fade End Duration", fadeEndDuration, 0f, endTrim - startTrim);
                 loopPreview = GUILayout.Toggle(loopPreview, "Loop Preview");
 
+                // Volume slider
+                volume = EditorGUILayout.Slider("Volume", volume, 0f, 2f);
+                previewAudioSource.volume = volume;
 
                 // Update waveform texture when sliders or fade values are adjusted
                 if (GUI.changed)
@@ -144,6 +148,7 @@ namespace SimblendTools
             AudioClip trimmedClip = AudioClip.Create("TrimmedClip", trimmedSamples.Length, audioClip.channels, audioClip.frequency, false);
             trimmedClip.SetData(trimmedSamples, 0);
             previewAudioSource.loop = loopPreview; // Add looping control
+            previewAudioSource.volume = volume; // Add volume control
             previewAudioSource.clip = trimmedClip;
             previewAudioSource.Play();
 
@@ -344,6 +349,12 @@ namespace SimblendTools
                     // Apply fade-out to the end of the trimmed data
                     trimmedData[fadeOutStart + i] *= fadeFactor;
                 }
+            }
+
+            // Apply global volume scaling to the trimmed data
+            for (int i = 0; i < trimmedData.Length; i++)
+            {
+                trimmedData[i] *= volume;
             }
 
             AudioClip newClip = AudioClip.Create(clip.name + "_EDITED", trimmedData.Length / clip.channels, clip.channels, clip.frequency, false);
